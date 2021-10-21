@@ -1,23 +1,25 @@
 package com.gs.design.pattern.state.order;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Main {
 
   public static void main(String[] args) {
-    Package pkg = new Package("Order id 1");
-    pkg.displayState();
-    pkg.nextState();
-    pkg.displayState();
-    pkg.nextState();
-    pkg.displayState();
     
-    pkg.nextState();
-    pkg.displayState();    
+    ExecutorService executor = Executors.newFixedThreadPool(10);
     
-    pkg = new Package("Order id 2");
-    pkg.displayState();
-    pkg.nextState();
-    pkg.nextState();
-    pkg.displayState();
+    for (int i = 0; i < 10; i++) {
+      final int orderid = i;
+      executor.submit(
+          () -> {
+            Package pkg = new Package("Order id " + orderid);
+            pkg.perform();
+          }
+       );
+      
+    }
+    
   }
 
 }

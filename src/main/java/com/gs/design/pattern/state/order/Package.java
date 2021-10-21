@@ -2,23 +2,24 @@ package com.gs.design.pattern.state.order;
 
 public class Package {
 
-  private PackageState state = new OrderState();
+  private PackageState state = new OrderPlacedState();
   private String orderId;
  
   public Package(String orderId) {
     this.orderId = orderId;
   }
 
-  public void displayState() {
-    System.out.println(orderId + "- " + state.currentState());
-  }
-
   public void setState(PackageState newState) {
     state = newState;
+    perform();
+  }
+  
+  public void perform() {
+    state.handle(this);    
   }
 
-  public void nextState() {
-    state.next(this);
+  public String getOrderId() {
+    return orderId;
   }
   
 }
